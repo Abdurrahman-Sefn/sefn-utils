@@ -145,8 +145,4 @@ examples/
 └── input_validation_example.cpp  # [Input validation demo](examples/input_validation_example.cpp)
 ```
 
----
-
-MIT License. See LICENSE for details.
-
 
