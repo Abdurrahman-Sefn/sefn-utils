@@ -41,6 +41,11 @@
  * for (auto* obj : results) {
  *     std::cout << *obj << "\n";
  * }
+ *
+ * // Remove a word
+ * if (dict.erase("hello")) {
+ *     std::cout << "Removed 'hello'\n";
+ * }
  * 
  * delete hello;
  * delete help;
@@ -109,6 +114,42 @@ private:
         }
     }
 
+    /**
+     * @brief Removes a word from the Trie (internal recursive helper).
+     * @param word Word to remove.
+     * @param index Current character index in the word.
+     * @return True if this node and its subtree can be deleted, false otherwise.
+     */
+    bool removeRecursive(const std::string &word, int index = 0) {
+        if (index == word.size()) {
+            // Reached end of word - clear the marker
+            if (!object) {
+                return false; // Word doesn't exist
+            }
+            object = nullptr;
+            // Return true if this node has no children (can be deleted)
+            return children.empty();
+        }
+
+        char ch = word[index];
+        auto it = children.find(ch);
+        if (it == children.end()) {
+            return false; // Character doesn't exist, word not in Trie
+        }
+
+        Trie* child = it->second;
+        bool canDeleteChild = child->removeRecursive(word, index + 1);
+
+        // If child can be deleted, remove it
+        if (canDeleteChild) {
+            delete child;
+            children.erase(it);
+            // Return true if this node has no object and no children
+            return object == nullptr && children.empty();
+        }
+
+        return false;
+    }
 public:
     /**
      * @brief Default constructor.
@@ -149,6 +190,17 @@ public:
             current = child;
         }
         current->object = object;
+    }
+
+    /**
+     * @brief Removes a word from the Trie.
+     * @param word Word to remove.
+     * @return True if word was found and removed, false if word doesn't exist.
+     * @note Does not deallocate the associated object; user must manage that.
+     *       Automatically cleans up empty nodes after removal.
+     */
+    bool erase(const std::string &word) {
+        return removeRecursive(word);
     }
 
     /**

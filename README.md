@@ -42,6 +42,7 @@ delete help;
 - `wordExists(const std::string& word)` - Find exact match
 - `prefixExists(const std::string& prefix)` - Check if prefix exists
 - `autoComplete(const std::string& prefix)` - Get all matches (sorted)
+- `erase(const std::string& word)` - Remove a word, returns bool (true if found)
 - `traverse(Func fn)` - Run a function on all objects
 - `clear()` - Delete all nodes
 

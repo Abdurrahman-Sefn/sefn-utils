@@ -38,6 +38,23 @@ int main() {
     std::cout << "Prefix 'ban' exists: " 
               << (dictionary.prefixExists("ban") ? "yes" : "no") << "\n";
 
+    // Erase example
+    std::cout << "\nErasing 'apply'...\n";
+    if (dictionary.erase("apply")) {
+        std::cout << "Successfully erased 'apply'\n";
+    }
+
+    // Auto-complete again to show removal
+    std::cout << "\nWords starting with 'app' after erase:\n";
+    auto results2 = dictionary.autoComplete("app");
+    if (results2.empty()) {
+        std::cout << "  (none)\n";
+    } else {
+        for (const auto* result : results2) {
+            std::cout << "  - " << *result << "\n";
+        }
+    }
+
     // Cleanup
     delete apple;
     delete application;
