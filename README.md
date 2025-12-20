@@ -118,6 +118,21 @@ int main() {
 }
 ```
 
+## Building Examples
+
+Examples are provided to demonstrate usage:
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+
+# Run examples
+./trie_example
+./input_validation_example
+```
+
 ---
 
 ## Notes
@@ -130,14 +145,23 @@ int main() {
 ## File Structure
 
 ```
-include/
-├── Trie.hpp           # Prefix tree for fast string searching
-└── InputUtils.hpp     # Validated input from console
+.
+├── include/
+│   ├── Trie.hpp              # Prefix tree for fast string searching
+│   └── InputUtils.hpp        # Validated input from console
+├── examples/
+│   ├── trie_example.cpp      # Trie usage demonstration
+│   └── input_validation_example.cpp  # Input validation examples
+├── README.md
+├── LICENSE
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+└── CMakeLists.txt
 ```
 
 ---
 
 ## License
 
-Open source.
+MIT License - see LICENSE file for details.
 

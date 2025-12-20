@@ -8,8 +8,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_library(cpp_utilities INTERFACE)
 target_include_directories(cpp_utilities INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# Example executable (optional)
-if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-    add_executable(example examples/example.cpp)
-    target_link_libraries(example PRIVATE cpp_utilities)
-endif()
+# Build examples
+add_executable(trie_example examples/trie_example.cpp)
+target_link_libraries(trie_example PRIVATE cpp_utilities)
+
+add_executable(input_validation_example examples/input_validation_example.cpp)
+target_link_libraries(input_validation_example PRIVATE cpp_utilities)
