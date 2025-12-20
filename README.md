@@ -1,6 +1,8 @@
 # C++ Utility Libraries
 
-Two repo I built for tasks I found myself doing repeatedly.
+I built this repository for tasks I found myself doing repeatedly.
+
+**Quick links:** [Trie](#trie) • [InputUtils](#inpututils) • [How to Use](#how-to-use) • [Examples](#examples)
 
 ## Overview
 
@@ -48,7 +50,9 @@ delete help;
 - Auto-complete: O(m + n) where n is result count
 - Space: O(N) where N is total characters stored
 
-See `examples/trie_example.cpp` for more.
+See [`examples/trie_example.cpp`](examples/trie_example.cpp) for more.
+
+---
 
 ## InputUtils
 
@@ -72,11 +76,11 @@ int age = readValidatedInput<int>(
 
 **Method signature:**
 ```cpp
-template<typename T, typename Validator>
+template<typename T>
 T readValidatedInput(
     const std::string& prompt,
     int indentTabs = 0,
-    Validator validator = nullptr,
+    std::function<bool(const T&)> validator = nullptr,
     const std::string& errorMessage = "Invalid value. Please try again.\n",
     const std::string& formatErrorMessage = "Invalid format. Please try again.\n"
 )
@@ -87,7 +91,9 @@ No validator? Just use the first parameter:
 std::string name = readValidatedInput<std::string>("Your name: ");
 ```
 
-See `examples/input_validation_example.cpp` for more.
+See [`examples/input_validation_example.cpp`](examples/input_validation_example.cpp) for more.
+
+---
 
 ## How to Use
 
@@ -108,6 +114,19 @@ make
 ./input_validation_example
 ```
 
+Check the [examples](#examples) section below for what each demo does.
+
+---
+
+## Examples
+
+Two example programs demonstrate each library:
+
+- **[`trie_example.cpp`](examples/trie_example.cpp)** - Insert, search, auto-complete, and traversal
+- **[`input_validation_example.cpp`](examples/input_validation_example.cpp)** - Read integers, doubles, and strings with validation
+
+Build them with the commands in [How to Use](#how-to-use) above.
+
 ## Notes
 
 - You manage the memory of objects stored in Trie (it doesn't own them)
@@ -115,16 +134,14 @@ make
 - Requires C++17 or later
 - MIT licensed, use freely
 
-## Files
-
 ```
 include/
 ├── Trie.hpp           # The Trie implementation
 └── InputUtils.hpp     # Input validation utility
 
 examples/
-├── trie_example.cpp           # Trie demo
-└── input_validation_example.cpp  # Input validation demo
+├── trie_example.cpp           # [Trie demo](examples/trie_example.cpp)
+└── input_validation_example.cpp  # [Input validation demo](examples/input_validation_example.cpp)
 ```
 
 ---
