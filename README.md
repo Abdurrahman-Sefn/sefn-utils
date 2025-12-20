@@ -1,111 +1,143 @@
-# My C++ Header-Only Libraries
+# C++ Utility Libraries
 
-## Overview
+A collection of header-only C++ libraries for common tasks: fast prefix-based string searching and validated console input.
 
-Welcome! This repository is a showcase of my C++ skills, presented as a collection of reusable, header-only utility libraries. The code is written using modern C++ practices and is designed to be both efficient and easy to integrate into other projects.
+## Quick Start
+
+These are header-only libraries—no compilation needed. Simply copy the headers into your project and include them:
+
+```cpp
+#include "Trie.hpp"
+#include "InputUtils.hpp"
+```
 
 ## Libraries
 
-This collection currently includes:
+### Trie: Fast Prefix-Based Search
 
-1.  **Trie (`Dictionary.hpp`):** A powerful prefix tree for string-related operations.
-2.  **Validated Input (`input_utils.hpp`):** A safe and flexible utility for reading user console input.
+A generic, efficient Trie (prefix tree) implementation for lexicographically sorted string operations.
 
----
+**Key Features:**
+- O(m) prefix and word lookups (m = string length)
+- Automatic lexicographic sorting of results
+- Memory-efficient prefix sharing
+- Template-based design for any object type
 
-### 1. Trie (`Dictionary.hpp`)
-
-This header provides a generic and efficient implementation of a **Trie** (also known as a Prefix Tree). It is named `Dictionary` in the code. This data structure is particularly well-suited for tasks that involve prefix-based searching, like auto-completion engines or spell checkers.
-
-#### Features
-
--   **Generic:** Can store pointers to any object type (`template<class T>`).
--   **Efficient Lookups:** Fast insertion and search operations for words and prefixes.
--   **Auto-completion:** Built-in function to find all words/objects associated with a given prefix.
--   **Modern C++:** Uses features like smart resource management (RAII) and deleted copy semantics for safety.
--   **Ownership Model:** The Trie does **not** take ownership of the stored pointers. You are responsible for managing the memory of the objects you insert.
-
-#### Example Usage
-
+**Quick Example:**
 ```cpp
-#include <iostream>
-#include <string>
-#include <vector>
-#include "Dictionary.hpp"
+Trie<std::string> dictionary;
 
-int main() {
-    Dictionary<std::string> trie;
+auto hello = new std::string("Hello, World!");
+auto help = new std::string("Ask for help");
 
-    // Associate std::string objects with words
-    auto apple = std::string("An apple a day...");
-    auto apply = std::string("To apply for the job...");
-    auto banana = std::string("A yellow fruit.");
+dictionary.insert(hello, "hello");
+dictionary.insert(help, "help");
 
-    trie.insert(&apple, "apple");
-    trie.insert(&apply, "apply");
-    trie.insert(&banana, "banana");
+std::vector<std::string*> results;
+dictionary.autoComplete("hel", results);  // [help, hello] - sorted
 
-    // Use auto-complete to find all words starting with "app"
-    std::vector<std::string*> results;
-    trie.auto_complete("app", results);
-
-    std::cout << "Words starting with 'app':" << std::endl;
-    for (const auto* str_ptr : results) {
-        std::cout << "- " << *str_ptr << std::endl;
-    }
-    // Note: Memory for apple, apply, banana must be managed manually.
-
-    return 0;
-}
+// Cleanup (Important!)
+delete hello;
+delete help;
 ```
 
+**API:**
+- `insert(T* object, const std::string& word)` - Add word with associated object
+- `wordExists(const std::string& word)` - Search for exact word
+- `prefixExists(const std::string& prefix)` - Check if prefix exists
+- `autoComplete(const std::string& prefix, std::vector<T*>& results)` - Find all words with prefix (sorted)
+- `traverse(Func function)` - Apply function to all objects
+- `clear()` - Deallocate all nodes
+
+**Performance:**
+- Insert: O(m × log k) where m = word length, k = alphabet size
+- Lookup: O(m)
+- Auto-complete: O(m + n) where n = matching words
+- Space: O(N) where N = total characters in all words
+
 ---
 
-### 2. Validated Input (`input_utils.hpp`)
+### Input Validation: Type-Safe Console Input
 
-This header provides a simple yet powerful template function, `read_validated_input`, for reading and validating user input from the console. It helps prevent common input errors and ensures that the data conforms to your specified rules.
+A flexible template utility for reading and validating user input from the console.
 
-#### Features
+**Key Features:**
+- Type-safe parsing into any C++ type
+- Custom validation with lambdas or functions
+- Configurable error messages
+- Automatic re-prompting on invalid input
+- Formatted prompts with indentation support
 
--   **Type-Safe:** Reads and parses input directly into the desired C++ type (`int`, `double`, `std::string`, etc.).
--   **Flexible Validation:** Accepts any callable (function pointer, functor, or lambda) to validate the input.
--   **User-Friendly:** Automatically re-prompts the user with a custom error message on invalid input.
-
-#### Example Usage
-
+**Quick Example:**
 ```cpp
-#include <iostream>
-#include "input_utils.hpp"
+int age = readValidatedInput<int>(
+    "Enter your age (18-65): ",
+    0,  // No indentation
+    [](const int& val) { return val >= 18 && val <= 65; },
+    "Invalid age. Please try again.\n"
+);
+```
+
+**API:**
+```cpp
+template<typename T, typename Validator>
+T readValidatedInput(
+    const std::string& prompt,              // Message to display
+    int indentTabs = 0,                     // Tab indentation count
+    Validator validator = nullptr,          // Custom validation function
+    const std::string& errorMessage = "...", 
+    const std::string& formatErrorMessage = "..."
+)
+```
+
+**Error Handling:**
+- Validates parsing success
+- Optionally validates parsed value
+- Handles input stream errors gracefully
+- Customizable error messages for each failure type
+
+---
+
+## Integration
+
+### Basic Integration
+```cpp
+#include "Trie.hpp"
+#include "InputUtils.hpp"
 
 int main() {
-    // Read an integer between 18 and 65
-    int age = read_validated_input<int>(
-        "Please enter your age (18-65): ",
-        0, // No indentation
-        [](const int& val) {
-            return val >= 18 && val <= 65;
-        },
-        "Invalid age. Please try again.\n"
+    // Use Trie
+    Trie<int> trie;
+    
+    // Use input validation
+    std::string name = readValidatedInput<std::string>(
+        "Enter your name: "
     );
-
-    std::cout << "Thank you. Your age is: " << age << std::endl;
-
+    
     return 0;
 }
 ```
 
 ---
 
-## How to Use
+## Notes
 
-These are header-only libraries, which makes them very easy to use:
+- Both libraries are header-only and have no external dependencies
+- Requires C++17 or later
+- The Trie stores pointers to your objects—you manage their memory
+- Templates are fully specialized at compile time with no runtime overhead
 
-1.  Clone this repository or download the files.
-2.  Copy the header files from this directory into your project's include path.
-3.  `#include` the desired header file in your code.
+## File Structure
 
-Example:
-```cpp
-#include "path/to/your/includes/Dictionary.hpp"
-#include "path/to/your/includes/input_utils.hpp"
 ```
+include/
+├── Trie.hpp           # Prefix tree for fast string searching
+└── InputUtils.hpp     # Validated input from console
+```
+
+---
+
+## License
+
+Open source.
+
