@@ -33,8 +33,7 @@ auto help = new std::string("Ask for help");
 dictionary.insert(hello, "hello");
 dictionary.insert(help, "help");
 
-std::vector<std::string*> results;
-dictionary.autoComplete("hel", results);  // [help, hello] - sorted
+auto results = dictionary.autoComplete("hel");  // Returns [help, hello]
 
 // Cleanup (Important!)
 delete hello;
@@ -45,7 +44,7 @@ delete help;
 - `insert(T* object, const std::string& word)` - Add word with associated object
 - `wordExists(const std::string& word)` - Search for exact word
 - `prefixExists(const std::string& prefix)` - Check if prefix exists
-- `autoComplete(const std::string& prefix, std::vector<T*>& results)` - Find all words with prefix (sorted)
+- `autoComplete(const std::string& prefix)` - Returns vector of all words with prefix (sorted)
 - `traverse(Func function)` - Apply function to all objects
 - `clear()` - Deallocate all nodes
 

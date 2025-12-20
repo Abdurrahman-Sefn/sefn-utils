@@ -20,8 +20,7 @@ int main() {
 
     // Auto-complete example
     std::cout << "Words starting with 'app':\n";
-    std::vector<std::string*> results;
-    dictionary.autoComplete("app", results);
+    auto results = dictionary.autoComplete("app");
     
     for (const auto* result : results) {
         std::cout << "  - " << *result << "\n";

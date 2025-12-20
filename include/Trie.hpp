@@ -37,11 +37,11 @@
  *     std::cout << "Found: " << *obj << std::endl;
  * }
  *
- * std::vector<std::string*> results;
- * dict.autoComplete("hel", results);
- * // results: [help, hello] (lexicographically sorted)
+ * auto results = dict.autoComplete("hel");  // Returns sorted results
+ * for (auto* obj : results) {
+ *     std::cout << *obj << "\n";
+ * }
  * 
- * // Remember to delete the objects usually managed by unique_ptr or manually
  * delete hello;
  * delete help;
  * ```
@@ -188,15 +188,17 @@ public:
     }
 
     /**
-     * @brief Retrieves all objects with a given prefix in lexicographic order.
-     * @param prefix String prefix to match.
-     * @param results Vector to populate with matching objects.
+     * @brief Retrieves all objects matching a prefix in lexicographic order.
+     * @param prefix String prefix to search for.
+     * @return Vector of pointers to matching objects, sorted lexicographically.
      */
-    void autoComplete(const std::string &prefix, std::vector<T*> &results) const {
+    std::vector<T*> autoComplete(const std::string &prefix) const {
+        std::vector<T*> results;
         const Trie* root = find(prefix);
         if (root) {
             root->getAllObjects(results);
         }
+        return results;
     }
 
     /**
