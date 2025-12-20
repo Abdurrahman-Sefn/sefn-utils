@@ -80,11 +80,11 @@ int age = readValidatedInput<int>(
 
 **API:**
 ```cpp
-template<typename T, typename Validator>
+template<typename T>
 T readValidatedInput(
-    const std::string& prompt,              // Message to display
-    int indentTabs = 0,                     // Tab indentation count
-    Validator validator = nullptr,          // Custom validation function
+    const std::string& prompt,                                  // Message to display
+    int indentTabs = 0,                                         // Tab indentation count
+    std::function<bool(const T&)> validator = nullptr,          // Custom validation function
     const std::string& errorMessage = "...", 
     const std::string& formatErrorMessage = "..."
 )
