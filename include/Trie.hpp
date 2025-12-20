@@ -200,7 +200,11 @@ public:
      *       Automatically cleans up empty nodes after removal.
      */
     bool erase(const std::string &word) {
-        return removeRecursive(word);
+        if(!wordExists(word)) {
+            return false;
+        }
+        removeRecursive(word);
+        return true;
     }
 
     /**
