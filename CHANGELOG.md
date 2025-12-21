@@ -2,12 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.0.0] - 2025-12-21
 
 ### Added
 - Initial release with Trie and InputUtils libraries
 - Comprehensive documentation and examples
-- MIT License
 
 ### Changed
 - Refactored naming conventions for consistency
