@@ -1,4 +1,4 @@
-# C++ Utility Libraries
+# Sefn Utils (C++ Utility Libraries)
 
 I built this repository for tasks I found myself doing repeatedly.
 
@@ -23,7 +23,7 @@ A prefix tree implementation useful for auto-complete, spell-checking, and any p
 
 **Basic usage:**
 ```cpp
-Trie<std::string> dict;
+Sefn::Trie<std::string> dict;
 
 auto hello = new std::string("Hello, World!");
 auto help = new std::string("Ask for help");
@@ -67,7 +67,7 @@ Reads user input from the console with type checking and validation.
 
 **Basic usage:**
 ```cpp
-int age = readValidatedInput<int>(
+int age = Sefn::readValidatedInput<int>(
     "Enter your age: ",
     0,
     [](const int& val) { return val >= 0 && val <= 150; },
@@ -78,7 +78,7 @@ int age = readValidatedInput<int>(
 **Method signature:**
 ```cpp
 template<typename T>
-T readValidatedInput(
+T Sefn::readValidatedInput(
     const std::string& prompt,
     int indentTabs = 0,
     std::function<bool(const T&)> validator = nullptr,
@@ -89,7 +89,7 @@ T readValidatedInput(
 
 No validator? Just use the first parameter:
 ```cpp
-std::string name = readValidatedInput<std::string>("Your name: ");
+std::string name = Sefn::readValidatedInput<std::string>("Your name: ");
 ```
 
 See [`examples/input_validation_example.cpp`](examples/input_validation_example.cpp) for more.
@@ -99,11 +99,19 @@ See [`examples/input_validation_example.cpp`](examples/input_validation_example.
 ## How to Use
 
 ### Copy headers
-These are header-only. Just copy `Trie.hpp` and `InputUtils.hpp` into your project:
+These are header-only. Copy the `include/Sefn` folder into your project's include path:
 
 ```cpp
-#include "Trie.hpp"
-#include "InputUtils.hpp"
+#include <Sefn/Trie.hpp>
+#include <Sefn/InputUtils.hpp>
+```
+
+### CMake Integration (Recommended)
+If you use CMake, you can add this repository as a subdirectory or fetch content:
+
+```cmake
+add_subdirectory(sefn-utils)
+target_link_libraries(your_app PRIVATE Sefn::Utils)
 ```
 
 ### Build examples
@@ -137,8 +145,9 @@ Build them with the commands in [How to Use](#how-to-use) above.
 
 ```
 include/
-├── Trie.hpp           # The Trie implementation
-└── InputUtils.hpp     # Input validation utility
+└── Sefn/
+    ├── Trie.hpp           # The Trie implementation
+    └── InputUtils.hpp     # Input validation utility
 
 examples/
 ├── trie_example.cpp           # [Trie demo](examples/trie_example.cpp)

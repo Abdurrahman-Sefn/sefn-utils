@@ -1,17 +1,17 @@
 #include <iostream>
-#include "../include/InputUtils.hpp"
+#include <Sefn/InputUtils.hpp>
 
 int main() {
     std::cout << "=== Input Validation Examples ===\n\n";
 
     // Example 1: Simple integer input
     std::cout << "Example 1: Read an integer\n";
-    int number = readValidatedInput<int>("Enter a number: ");
+    int number = Sefn::readValidatedInput<int>("Enter a number: ");
     std::cout << "You entered: " << number << "\n\n";
 
     // Example 2: Integer with validation (age)
     std::cout << "Example 2: Read age (18-100)\n";
-    int age = readValidatedInput<int>(
+    int age = Sefn::readValidatedInput<int>(
         "Enter your age: ",
         0,
         [](const int& val) { return val >= 18 && val <= 100; },
@@ -21,7 +21,7 @@ int main() {
 
     // Example 3: Double with validation (percentage)
     std::cout << "Example 3: Read percentage (0-100)\n";
-    double percentage = readValidatedInput<double>(
+    double percentage = Sefn::readValidatedInput<double>(
         "Enter a percentage: ",
         0,
         [](const double& val) { return val >= 0.0 && val <= 100.0; },
@@ -31,7 +31,7 @@ int main() {
 
     // Example 4: String input
     std::cout << "Example 4: Read a name\n";
-    std::string name = readValidatedInput<std::string>(
+    std::string name = Sefn::readValidatedInput<std::string>(
         "Enter your name: ",
         0,
         [](const std::string& val) { return !val.empty() && val.length() <= 50; },

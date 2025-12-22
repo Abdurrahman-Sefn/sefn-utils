@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "../include/Trie.hpp"
+#include <Sefn/Trie.hpp>
 
 int main() {
-    Trie<std::string> dictionary;
+    Sefn::Trie<std::string> dictionary;
 
     // Create some sample data
     auto apple = new std::string("A red fruit");
