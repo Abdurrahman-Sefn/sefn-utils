@@ -7,20 +7,23 @@
 #include <functional>
 
 /**
- * @file Trie.hpp
+ * @file Sefn/Trie.hpp
  * @brief Generic Trie data structure for prefix-based operations.
  */
 
 namespace Sefn {
     
     /**
+     * @class Trie
+     * @brief A generic prefix tree (Trie) implementation.
+     *
      * @details
      * Efficient for:
-     * - Prefix searches: O(m) where m is prefix length
-     * - Auto-completion: Fast retrieval of all words with a given prefix
-     * - Word lookups: O(m) where m is word length
-     * - Memory efficiency: Shares common prefixes among words
-     * - Lexicographic ordering: Results are naturally sorted
+     * - Prefix searches: O(m) where m is prefix length.
+     * - Auto-completion: Fast retrieval of all words with a given prefix.
+     * - Word lookups: O(m) where m is word length.
+     * - Memory efficiency: Shares common prefixes among words.
+     * - Lexicographic ordering: Results are naturally sorted.
      *
      * @tparam T Type of object to associate with each word.
      *
@@ -30,7 +33,7 @@ namespace Sefn {
      *
      * @example
      * ```cpp
-     * Trie<std::string> dict;
+     * Sefn::Trie<std::string> dict;
      * auto hello = new std::string("Hello");
      * auto help = new std::string("Help");
      *
@@ -44,11 +47,6 @@ namespace Sefn {
      * auto results = dict.autoComplete("hel");  // Returns sorted results
      * for (auto* obj : results) {
      *     std::cout << *obj << "\n";
-     * }
-     *
-     * // Remove a word
-     * if (dict.erase("hello")) {
-     *     std::cout << "Removed 'hello'\n";
      * }
      * 
      * delete hello;

@@ -6,7 +6,7 @@
 #include <functional>
 
 /**
- * @file InputUtils.hpp
+ * @file Sefn/InputUtils.hpp
  * @brief Console input utilities with validation support.
  */
 
@@ -26,6 +26,16 @@ namespace Sefn {
      * @param errorMessage Custom message shown when validation fails.
      * @param formatErrorMessage Custom message shown when parsing fails.
      * @return The validated value of type T.
+     * 
+     * @example
+     * ```cpp
+     * int age = Sefn::readValidatedInput<int>(
+     *     "Enter age: ", 
+     *     0, 
+     *     [](int a) { return a >= 18; },
+     *     "Must be 18+.\n"
+     * );
+     * ```
      */
     template<typename T>
     T readValidatedInput(const std::string& prompt, int indentTabs = 0,
@@ -58,8 +68,8 @@ namespace Sefn {
                 std::cout << errorIndent << formatErrorMessage;
             }
         }
-            return value;
-        }
+        return value;
+    }
         
 } // namespace Sefn
     
