@@ -1,4 +1,4 @@
-# Sefn Utils (C++ Utility Libraries)
+# Sefn Utils (C++ Library)
 
 I built this repository for tasks I found myself doing repeatedly.
 
