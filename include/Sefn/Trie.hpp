@@ -48,6 +48,11 @@ namespace Sefn {
      * for (auto* obj : results) {
      *     std::cout << *obj << "\n";
      * }
+     *
+     * // Remove a word
+     * if (dict.erase("hello")) {
+     *     std::cout << "Removed 'hello'\n";
+     * }
      * 
      * delete hello;
      * delete help;
@@ -237,7 +242,7 @@ namespace Sefn {
         /**
          * @brief Applies a function to all objects in the Trie.
          * @tparam Func Callable type.
-         * @param function Called with each T* in the Trie.
+         * @param function Called with each T* in the Trie in lexicographic order.
          */
         template<typename Func>
         void traverse(Func function) const {

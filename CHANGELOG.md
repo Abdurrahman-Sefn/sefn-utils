@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1] - 2025-12-22
+
+### Added
+- Master header `include/Sefn.hpp` for including all library components at once.
+
+### Documentation
+- Centralized `Sefn` namespace documentation in `Sefn.hpp`.
+- Clarified that `Trie::traverse` visits nodes in lexicographic order.
+- Added usage note for `indentTabs` (must be non-negative) in `InputUtils.hpp`.
+- Updated `README.md` to include the new master header and updated file structure.
+
 ## [2.0.0] - 2025-12-22
 
 ### Changed

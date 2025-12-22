@@ -20,7 +20,7 @@ namespace Sefn {
      *
      * @tparam T Data type to read and return.
      * @param prompt Message to display to the user.
-     * @param indentTabs Number of tabs to indent prompts and messages.
+     * @param indentTabs Number of tabs to indent prompts and messages. Must be non-negative.
      * @param validator Callable returning true for valid values, false to reject.
      *                  nullptr or empty function skips validation.
      * @param errorMessage Custom message shown when validation fails.

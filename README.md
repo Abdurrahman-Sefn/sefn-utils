@@ -99,9 +99,13 @@ See [`examples/input_validation_example.cpp`](examples/input_validation_example.
 ## How to Use
 
 ### Copy headers
-These are header-only. Copy the `include/Sefn` folder into your project's include path:
+These are header-only. Copy the `include/Sefn.hpp` file and `include/Sefn` folder into your project's include path:
 
 ```cpp
+// Include everything
+#include <Sefn.hpp>
+
+// Or include individual parts
 #include <Sefn/Trie.hpp>
 #include <Sefn/InputUtils.hpp>
 ```
@@ -145,6 +149,7 @@ Build them with the commands in [How to Use](#how-to-use) above.
 
 ```
 include/
+├── Sefn.hpp               # Master header (includes everything)
 └── Sefn/
     ├── Trie.hpp           # The Trie implementation
     └── InputUtils.hpp     # Input validation utility
