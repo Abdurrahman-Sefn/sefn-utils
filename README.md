@@ -133,7 +133,7 @@ Build them with the commands in [How to Use](#how-to-use) above.
 - You manage the memory of objects stored in Trie (it doesn't own them)
 - Both are templates—no separate compilation
 - Requires C++17 or later
-- MIT licensed, use freely
+- Use freely!
 
 ```
 include/
