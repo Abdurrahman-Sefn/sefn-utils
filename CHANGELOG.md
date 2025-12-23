@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.1] - 2025-12-23
+
+### Documentation
+- **README Structure Overhaul:**
+  - Split integration guide into "Getting Started" (Quick Start) and detailed "Usage".
+  - Defined 4 distinct integration methods (FetchContent, Manual Copy, Submodule, System-wide) with **Pros/Cons** analysis for each.
+  - Added explicit memory management "Best Practices" (Good/Bad examples) for `Trie` to prevent leaks.
+  - Added a "Minimal Example" section for quick library verification.
+  - Improved cross-linking between sections and files.
+
 ## [2.1.0] - 2025-12-23
 
 ### Added
