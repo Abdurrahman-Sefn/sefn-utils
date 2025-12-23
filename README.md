@@ -63,7 +63,7 @@ include(FetchContent)
 FetchContent_Declare(
     SefnUtils
     GIT_REPOSITORY https://github.com/Abdurrahman-Sefn/sefn-utils.git
-    GIT_TAG main  # or use a specific version tag like v2.0.0
+    GIT_TAG main  # or use a specific version tag like v2.1.1
 )
 
 FetchContent_MakeAvailable(SefnUtils)
