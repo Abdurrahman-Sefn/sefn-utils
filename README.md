@@ -177,7 +177,13 @@ git commit -m "Update sefn-utils"
 **Best for:** Using across multiple projects, system-level development
 
 ```bash
-cd sefn-utils
+# Navigate to where you cloned the repository
+cd /path/to/sefn-utils
+
+# Or clone it first if you haven't:
+# git clone https://github.com/Abdurrahman-Sefn/sefn-utils.git
+# cd sefn-utils
+
 mkdir build && cd build
 cmake ..
 sudo make install
