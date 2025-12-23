@@ -1,162 +1,185 @@
 # Sefn Utils (C++ Library)
 
-I built this repository for tasks I found myself doing repeatedly.
+I built this repository for C++ tasks I found myself doing repeatedly. It provides a collection of lightweight, header-only utilities.
 
-**Quick links:** [Trie](#trie) • [InputUtils](#inpututils) • [How to Use](#how-to-use) • [Examples](#examples)
+**Quick links:** [Overview](#overview) • [Installation](#installation) • [Integration](#integration) • [Trie](#trie) • [InputUtils](#inpututils) • [Examples](#building-examples) • [Tests](#running-tests) • [License](#license) • [Files](#directory-structure)
 
 ## Overview
 
-- **Trie**: A fast, generic prefix tree for auto-complete and prefix-based operations
-- **InputUtils**: Type-safe console input with custom validation
+This repository represents my C++ utilities and data structures. For now it contains 2 generic files: **Trie** and **InputUtils**.
 
-Both are header-only, require C++17, and have zero external dependencies.
+**Key Features:**
+- Header-only (easy integration)
+- Zero external dependencies
+- Requires C++17 or later
 
-## Trie
+---
 
-A prefix tree implementation useful for auto-complete, spell-checking, and any prefix-based search.
+## Installation
 
-**What it does:**
-- Fast O(m) lookups where m is the string length
-- Auto-complete with automatic lexicographic sorting
-- Generic—works with any pointer type
-- Memory-efficient through prefix sharing
+### Option 1: System-wide Install (CMake)
+Recommended for using the library across multiple projects.
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/Sefn-Utils.git
+cd Sefn-Utils
+
+# Build and install
+mkdir build && cd build
+cmake ..
+sudo make install
+```
+
+### Option 2: Manual Copy (Local)
+Simply copy the [`include/`](include/) directory content into your project's source tree and add it to your include path.
+
+```cpp
+#include <Sefn.hpp> // Includes everything
+// or
+#include <Sefn/Trie.hpp>
+```
+
+---
+
+## Integration
+
+### 1. CMake `find_package` (If installed system-wide)
+Add the following to your [`CMakeLists.txt`](CMakeLists.txt):
+
+```cmake
+find_package(SefnUtils REQUIRED)
+
+add_executable(my_app main.cpp)
+target_link_libraries(my_app PRIVATE Sefn::Utils)
+```
+
+### 2. CMake `add_subdirectory` (If using git submodule)
+If you've added this repo as a submodule (e.g., in `external/Sefn-Utils`):
+
+```cmake
+add_subdirectory(external/Sefn-Utils)
+target_link_libraries(my_app PRIVATE Sefn::Utils)
+```
+
+---
+
+## Library Documentation
+
+### Trie
+
+This is a key-to-value data structure that maps from a string key to an object pointer.
+
+**Note:** This Trie acts as a **non-owning index**. It stores pointers to your objects but does *not* manage their memory (lifetime). You must ensure the objects remain valid while they are in the Trie.
+
+- I provided it with CRUD operations and **auto-completion**: you give it a prefix, and it retrieves all object pointers whose keys share this prefix, efficiently **SORTED** based on their key values.
+- It can also accept a function as a parameter to apply to object pointers while traversing them.
+
+**Key Methods:**
+- `insert(T* obj, const std::string& word)`
+- `wordExists(const std::string& word)`
+- `autoComplete(const std::string& prefix)`
+- `erase(const std::string& word)`
+- `traverse(Func fn)`
 
 **Basic usage:**
 ```cpp
 Sefn::Trie<std::string> dict;
 
-auto hello = new std::string("Hello, World!");
-auto help = new std::string("Ask for help");
+dict.insert(new std::string("Hello"), "hello");
+dict.insert(new std::string("Help"), "help");
 
-dict.insert(hello, "hello");
-dict.insert(help, "help");
-
-auto results = dict.autoComplete("hel");  // [help, hello] - sorted
-
-delete hello;
-delete help;
+// Returns: [Help, Hello] (sorted)
+auto results = dict.autoComplete("hel"); 
 ```
 
-**Methods:**
-- `insert(T* obj, const std::string& word)` - Add a word
-- `wordExists(const std::string& word)` - Find exact match
-- `prefixExists(const std::string& prefix)` - Check if prefix exists
-- `autoComplete(const std::string& prefix)` - Get all matches (sorted)
-- `erase(const std::string& word)` - Remove a word, returns bool (true if found)
-- `traverse(Func fn)` - Run a function on all objects
-- `clear()` - Delete all nodes
+See [`examples/TrieExample.cpp`](examples/TrieExample.cpp) for a full demo.
 
-**Performance:**
-- Insert/lookup: O(m) where m is word length
-- Auto-complete: O(m + n) where n is result count
-- Space: O(N) where N is total characters stored
+### InputUtils
 
-See [`examples/trie_example.cpp`](examples/trie_example.cpp) for more.
+This contains a function that reads from the console, validates the input, and cleans the input buffer—preventing system crashes or infinite loops. It can also accept a function as an optional parameter to validate the input logic.
 
----
+**Function Signature:**
+```cpp
+template<typename T>
+T readValidatedInput(
+    const std::string& prompt,
+    int indentTabs = 0,
+    std::function<bool(const T&)> validator = nullptr,
+    const std::string& errorMessage = "Invalid value...\n",
+    const std::string& formatErrorMessage = "Invalid format...\n"
+);
+```
 
-## InputUtils
-
-Reads user input from the console with type checking and validation.
-
-**What it does:**
-- Parses input into any C++ type (int, double, string, etc.)
-- Optional custom validation with lambdas
-- Re-prompts on invalid input
-- Handles errors gracefully
+**Parameters:**
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `prompt` | The message displayed to the user. | (Required) |
+| `indentTabs` | Number of tabs to indent the prompt. | `0` |
+| `validator` | A function/lambda returning `true` for valid input. | `nullptr` |
+| `errorMessage` | Shown when the `validator` returns `false`. | "Invalid value..." |
+| `formatErrorMessage`| Shown when input type parsing fails (e.g. text for int). | "Invalid format..." |
 
 **Basic usage:**
 ```cpp
+// Read an integer between 0 and 150
 int age = Sefn::readValidatedInput<int>(
     "Enter your age: ",
-    0,
+    0, 
     [](const int& val) { return val >= 0 && val <= 150; },
     "Age must be 0-150.\n"
 );
 ```
 
-**Method signature:**
-```cpp
-template<typename T>
-T Sefn::readValidatedInput(
-    const std::string& prompt,
-    int indentTabs = 0,
-    std::function<bool(const T&)> validator = nullptr,
-    const std::string& errorMessage = "Invalid value. Please try again.\n",
-    const std::string& formatErrorMessage = "Invalid format. Please try again.\n"
-)
-```
-
-No validator? Just use the first parameter:
-```cpp
-std::string name = Sefn::readValidatedInput<std::string>("Your name: ");
-```
-
-See [`examples/input_validation_example.cpp`](examples/input_validation_example.cpp) for more.
+See [`examples/InputValidationExample.cpp`](examples/InputValidationExample.cpp) for more.
 
 ---
 
-## How to Use
+## Building Examples
 
-### Copy headers
-These are header-only. Copy the `include/Sefn.hpp` file and `include/Sefn` folder into your project's include path:
+To build and run the included example programs:
 
-```cpp
-// Include everything
-#include <Sefn.hpp>
-
-// Or include individual parts
-#include <Sefn/Trie.hpp>
-#include <Sefn/InputUtils.hpp>
-```
-
-### CMake Integration (Recommended)
-If you use CMake, you can add this repository as a subdirectory or fetch content:
-
-```cmake
-add_subdirectory(sefn-utils)
-target_link_libraries(your_app PRIVATE Sefn::Utils)
-```
-
-### Build examples
 ```bash
 mkdir build && cd build
 cmake ..
 make
+
+# Run demos
 ./trie_example
 ./input_validation_example
 ```
 
-Check the [examples](#examples) section below for what each demo does.
+## Running Tests
+
+This project uses `CTest` for unit testing. To run the test suite:
+
+```bash
+cd build
+cmake ..
+make
+ctest --output-on-failure
+```
 
 ---
 
-## Examples
+## License
 
-Two example programs demonstrate each library:
-
-- **[`trie_example.cpp`](examples/trie_example.cpp)** - Insert, search, auto-complete, and traversal
-- **[`input_validation_example.cpp`](examples/input_validation_example.cpp)** - Read integers, doubles, and strings with validation
-
-Build them with the commands in [How to Use](#how-to-use) above.
-
-## Notes
-
-- You manage the memory of objects stored in Trie (it doesn't own them)
-- Both are templates—no separate compilation
-- Requires C++17 or later
+- This project is licensed under the MIT License.
 - Use freely!
+- See the [LICENSE](LICENSE) file for details.
+
+## Directory Structure
 
 ```
 include/
-├── Sefn.hpp               # Master header (includes everything)
+├── Sefn.hpp               # Master header
 └── Sefn/
-    ├── Trie.hpp           # The Trie implementation
+    ├── Trie.hpp           # Trie implementation
     └── InputUtils.hpp     # Input validation utility
 
 examples/
-├── trie_example.cpp           # [Trie demo](examples/trie_example.cpp)
-└── input_validation_example.cpp  # [Input validation demo](examples/input_validation_example.cpp)
+├── TrieExample.cpp
+└── InputValidationExample.cpp
 ```
 
 

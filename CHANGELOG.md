@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2025-12-23
+
+### Added
+- **Installation Support:** Added `install()` rules to `CMakeLists.txt` for system-wide installation.
+- **CMake Integration:** Generated `SefnUtilsConfig.cmake` to support `find_package(SefnUtils)` in external projects.
+- **Unit Tests:** Added `tests/` directory with a custom lightweight test framework and `TrieTests`.
+- **License:** Added `LICENSE` file (MIT License).
+
+### Changed
+- **Renaming:** Renamed example source files to PascalCase (`TrieExample.cpp`, `InputValidationExample.cpp`) to match project conventions.
+
+### Documentation
+- **README Enhancements:**
+  - Clarified that `Trie` acts as a **non-owning index** to improve memory safety awareness.
+  - Added "Running Tests" guide for `CTest`.
+  - Expanded "Quick Links" to cover all major sections.
+  - Added internal clickable links for files (e.g., `Sefn.hpp`, `CMakeLists.txt`) and directories.
+  - Refined installation terminology (e.g., "Manual Copy") for better clarity.
+  - Included a detailed parameter table for `InputUtils`.
+  - Integrated custom technical descriptions into the "Overview" and library sections.
+
 ## [2.0.1] - 2025-12-22
 
 ### Added
