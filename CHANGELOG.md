@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.2] - 2025-12-24
+
+### Added
+- **Unit Tests:** Added `tests/InputUtilsTests.cpp` to provide automated regression testing for `InputUtils`.
+  - Covers valid input, validation logic, format error handling, and string tokenization.
+- **CMake:** Registered `input_utils_tests` in `CMakeLists.txt`.
+
+### Removed
+- **Manual Example:** Removed `examples/InputValidationExample.cpp` as it has been replaced by the automated test suite.
+
 ## [2.1.1] - 2025-12-23
 
 ### Documentation

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(sefn_utils VERSION 2.1.1)
+project(sefn_utils VERSION 2.1.2)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -49,9 +49,6 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     add_executable(trie_example examples/TrieExample.cpp)
     target_link_libraries(trie_example PRIVATE Sefn::Utils)
 
-    add_executable(input_validation_example examples/InputValidationExample.cpp)
-    target_link_libraries(input_validation_example PRIVATE Sefn::Utils)
-
     # Unit Tests
     enable_testing()
     
@@ -59,5 +56,10 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     target_link_libraries(trie_tests PRIVATE Sefn::Utils)
     
     add_test(NAME TrieTests COMMAND trie_tests)
+
+    add_executable(input_utils_tests tests/InputUtilsTests.cpp)
+    target_link_libraries(input_utils_tests PRIVATE Sefn::Utils)
+    
+    add_test(NAME InputUtilsTests COMMAND input_utils_tests)
 
 endif()
